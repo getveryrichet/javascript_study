@@ -29,15 +29,16 @@ http.createServer((req, res) => {
             expires
         };
         res.writeHead(302, {
+            // instead of sending user name along with cookie, send randomInt and set name and expired time in session object
             Location: '/',
-            'Set-Cookie': `session=${randomInt};Expires=${expires.toUTCString()};HttpOnly;Path=/`,
+            'Set-Cookie': `session=${randomInt};Expires=${expires.toUTCString()};HttpOnly;Path=/`
         });
         res.end();
     } else if (cookies.session && session[cookies.session].expires > new Date()) {
         res.writeHead(200, { 'Content-Type': 'text/html; charset=utf-8'});
         res.end(`Welcome ${session[cookies.session].name}`)
     } else {
-        fs.readFile('./server4.html', (err,data) => {
+        fs.readFile('./index.html', (err,data) => {
             if (err) {
                 throw err;
             }
